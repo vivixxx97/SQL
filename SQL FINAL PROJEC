@@ -1,0 +1,83 @@
+1.
+SELECT FirstName,LastName,CustomerId,Country
+FROM chinook.customers
+WHERE Country <> 'USA';
+
+2.
+SELECT *
+FROM chinook.customers
+WHERE Country = 'Brazil';
+
+3.
+SELECT customers.FirstName,customers.LastName,invoices.InvoiceId,invoices.InvoiceDate,invoices.BillingCity
+FROM customers
+JOIN invoices ON
+customers.CustomerId=invoices.CustomerId
+WHERE Country = 'Brazil';
+
+
+4.
+SELECT cust.FirstName, cust.LastName, inv.InvoiceId, inv.BillingCountry, inv.InvoiceDate
+FROM chinook.invoices as inv 
+LEFT JOIN chinook.customers as cust 
+on inv.CustomerId = cust.CustomerId 
+WHERE inv.BillingCountry = "Brazil";
+
+
+5.
+SELECT * FROM chinook.Employees
+WHERE Title = "Sales Support Agent" ;
+
+6.
+SELECT DISTINCT(BillingCountry)
+FROM chinook.invoices;
+
+
+7.
+SELECT emp.LastName,emp.Firstname,cust.FirstName,cust.LastName, cust.Country, inv.total
+FROM chinook.employees emp 
+JOIN chinook.Customers cust ON cust.SupportRepId = emp.EmployeeId
+JOIN chinook.Invoices Inv ON Inv.CustomerId = cust.CustomerId;
+
+8.
+SELECT COUNT (*)
+FROM chinook.invoices
+WHERE InvoiceDate LIKE '%2009%';
+
+9.
+SELECT SUM(Total) AS "2009 Total Sales"
+FROM chinook.invoices
+WHERE InvoiceDate LIKE '%2009%';
+
+
+10.
+SELECT t.name,i.InvoiceLineId
+FROM chinook.Invoice_items i
+JOIN chinook.tracks t
+ON i.TrackId= t.TrackId;
+
+
+
+--SHOW HOW MANY SALE SUPPORT AGENTS THE COMPANY HAS.
+SELECT COUNT (title) AS 'Sales Support Agents'
+FROM chinook.employees
+WHERE title='Sales Support Agent';
+
+--SHOW ALL THE CUSTOMERS THAT ARE IN THE USA  
+SELECT * 
+FROM chinook.customers
+WHERE Country LIKE 'USA';
+
+--Show the invoice data along with customer information for invoices issued between 
+--January 1, 2009, and December 16,2010, sorted in ascending order.
+SELECT invoices.customerID,invoices.InvoiceDate,invoices.InvoiceId,customers.Firstname,customers.Lastname
+FROM invoices
+INNER JOIN customers ON invoices.customerID=customers.customerID
+WHERE InvoiceDate BETWEEN '2009-01-01' AND '2010-12-16'
+ORDER BY InvoiceDate ASC;
+
+--Get the average price and select only those items whose unit price is higher than the avrrage price of all items.
+SELECT AVG(UnitPrice) AS 'AVERAGE PRICE'
+FROM invoice_items
+WHERE UnitPrice > (SELECT AVG(UnitPrice) FROM invoice_items);
+
